@@ -1,7 +1,7 @@
 pipeline {
 	agent {
 		kubernetes {
-			inheritFrom "jenkins-slave"
+			inheritFrom "kubeagent"
             cloud "kubernetes"
             yaml '''
             apiVersion: v1
@@ -13,7 +13,7 @@ pipeline {
             spec:
               containers:
               - name: jnlp
-                image: jenkinsci/jnlp-slave
+                image: jenkins/inbound-agent:latest
                 args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
               - name: maven
                 image: maven:3.8.7-openjdk-18-slim
@@ -28,6 +28,11 @@ pipeline {
 		TEST = 'test'
 	}
 	stages{
+		stage("Start"){
+			steps{
+				sh 'pwd'
+			}
+		}	
 		stage("Build"){
 			steps{
 				container('maven'){
