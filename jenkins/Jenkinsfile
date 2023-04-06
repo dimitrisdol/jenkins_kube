@@ -1,7 +1,7 @@
 pipeline {
 	agent {
 		kubernetes {
-			inheritFrom "kubeagent"
+			inheritFrom "kube-agent"
             cloud "kubernetes"
             yaml '''
             apiVersion: v1
@@ -28,11 +28,6 @@ pipeline {
 		TEST = 'test'
 	}
 	stages{
-		stage("Start"){
-			steps{
-				sh 'pwd'
-			}
-		}	
 		stage("Build"){
 			steps{
 				container('maven'){
