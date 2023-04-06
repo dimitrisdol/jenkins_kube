@@ -32,7 +32,9 @@ pipeline {
 		}
 	}
 	environment {
-		TEST = 'test'
+		// Docker ENV vars
+    	USER_CREDENTIALS = credentials('Docker-credentials')
+    	TAG = "0.0.${BUILD_NUMBER}"
 	}
 	stages{
 		stage("Build"){
