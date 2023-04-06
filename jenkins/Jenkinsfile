@@ -28,6 +28,8 @@ pipeline {
                 - sleep
                 args:
                 - 99d
+                securityContext:
+                  privileged: true
             '''
 		}
 	}
