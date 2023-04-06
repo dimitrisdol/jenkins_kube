@@ -29,12 +29,10 @@ pipeline {
 	}
 	stages{
 		stage("Build"){
-			container('maven'){
-				stage('Build the maven app'){
-					steps{
-						// With tests passed build and package the app
-						sh 'mvn -f sample-maven-web-app/pom.xml clean install'
-					}
+			steps{
+				container('maven'){
+					// With tests passed build and package the app
+					sh 'mvn -f sample-maven-web-app/pom.xml clean install'
 				}
 			}
 		}	
