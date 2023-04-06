@@ -21,6 +21,13 @@ pipeline {
                 - sleep
                 args:
                 - 99d
+              - name: docker
+                image: docker:dind
+                tty: true
+                command:
+                - sleep
+                args:
+                - 99d
             '''
 		}
 	}
@@ -34,6 +41,17 @@ pipeline {
 					// With tests passed build and package the app
 					sh 'mvn -f sample-maven-web-app/pom.xml clean install'
 				}
+			}
+		}
+		stage("Containerize"){
+			  steps{
+			  	container('docker'){
+				  script {				
+						// We also build the Docker image. I used my docker account and tagged the image based on the pipeline build number.
+                    			dockerImage = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:${TAG}", "-f sample-maven-web-app/Dockerfile .")
+                    			dockerImageLatest = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:latest", "-f sample-maven-web-app/Dockerfile .")
+        	       	}
+        	    }
 			}
 		}	
 	}
