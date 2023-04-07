@@ -20,6 +20,10 @@ spec:
       name: docker
       targetPort: 8082
       nodePort: 32002
+    - port: 8083
+      name: docker-https
+      targetPort: 8083
+      nodePort: 32003
 
  
 
