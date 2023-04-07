@@ -1,7 +1,7 @@
 pipeline {
-	agent {
-		kubernetes {
-			inheritFrom "kube-agent"
+  agent {
+    kubernetes {
+      inheritFrom "kube-agent"
             cloud "kubernetes"
             yaml '''
             apiVersion: v1
@@ -38,32 +38,40 @@ pipeline {
                 hostPath:
                   path: /var/run/docker.sock 
             '''
-		}
-	}
-	environment {
-		// Docker ENV vars
-    	USER_CREDENTIALS = credentials('Docker-credentials')
-    	TAG = "0.0.${BUILD_NUMBER}"
-	}
-	stages{
-		stage("Build"){
-			steps{
-				container('maven'){
-					// With tests passed build and package the app
-					sh 'mvn -f sample-maven-web-app/pom.xml clean install'
-				}
-			}
-		}
-		stage("Containerize"){
-			  steps{
-			  	container('docker'){
-				  script {				
-						// We also build the Docker image. I used my docker account and tagged the image based on the pipeline build number.
-                    			dockerImage = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:${TAG}", "-f sample-maven-web-app/Dockerfile .")
-                    			dockerImageLatest = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:latest", "-f sample-maven-web-app/Dockerfile .")
-        	       	}
-        	    }
-			}
-		}	
-	}
+    }
+  }
+  environment {
+    // Docker ENV vars
+      USER_CREDENTIALS = credentials('Docker-credentials')
+      TAG = "0.0.${BUILD_NUMBER}"
+  }
+  stages{
+    stage("Build"){
+      steps{
+        container('maven'){
+          // With tests passed build and package the app
+          sh 'mvn -f sample-maven-web-app/pom.xml clean install'
+        }
+      }
+    }
+    stage("Containerize"){
+        steps{
+          container('docker'){
+          script {        
+            // We also build the Docker image. I used my docker account and tagged the image based on the pipeline build number.
+                          dockerImage = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:${TAG}", "-f sample-maven-web-app/Dockerfile .")
+                          dockerImageLatest = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:latest", "-f sample-maven-web-app/Dockerfile .")
+                  }
+              }
+      }
+    }
+    stage("Deploy Artifact"){
+      steps{
+          //We changed the pom.xml file accordingly to deploy to our private Nexus artifactory
+          withMaven(globalMavenSettingsConfig: 'maven-settings-xml') {
+          sh 'mvn -f sample-maven-web-app/pom.xml clean deploy'
+          }
+      }
+    } 
+  }
 }
