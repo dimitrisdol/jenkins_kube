@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nexus
-  namespace: nexus
+  namespace: devops-tools
 spec:
   replicas: 1
   selector:
@@ -22,7 +22,7 @@ spec:
           mountPath: /nexus-data
       containers:
         - name: nexus
-          image: sonatype/nexus3:latest
+          image: sonatype/nexus3:3.51.0
           resources:
             limits:
               memory: "4Gi"
@@ -31,7 +31,7 @@ spec:
               memory: "2Gi"
               cpu: "500m"
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           volumeMounts:
             - name: nexus-data
               mountPath: /nexus-data

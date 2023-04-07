@@ -1,11 +1,9 @@
 #!/bin/bash
 
 ENV_PATH=~/Desktop/jenkins_kube/jenkins/nexus/
+
 #Check the perisstent volume you use for the Nexus deployment!!
 NEXUS_DATA=/nexus-data
-
-#Firstly we create the namespace for the Nexus repository
-kubectl create namespace nexus
 
 #Allow Nexus to use its data
 sudo chown -R 200:200 ${NEXUS_DATA}
