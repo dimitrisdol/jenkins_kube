@@ -67,10 +67,12 @@ pipeline {
     }
     stage("Deploy Artifact"){
       steps{
-          //We changed the pom.xml file accordingly to deploy to our private Nexus artifactory
-          withMaven(globalMavenSettingsConfig: 'maven-settings-xml') {
-          sh 'mvn -f sample-maven-web-app/pom.xml clean deploy'
+          container('docker'){
+            //We changed the pom.xml file accordingly to deploy to our private Nexus artifactory
+            withMaven(globalMavenSettingsConfig: 'maven-settings-xml') {
+            sh 'mvn -f sample-maven-web-app/pom.xml clean deploy'
           }
+        }
       }
     } 
   }
