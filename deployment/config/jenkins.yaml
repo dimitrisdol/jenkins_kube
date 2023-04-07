@@ -6,20 +6,20 @@ credentials:
           description: "The Github token I use to push pull and commit to repositories\
             \ in GitHub"
           id: "Github-token"
-          password: "{AQAAABAAAAAwnMaANohhcGDRYGZ3zxYIAvpIIzIbOmGLB3Ke8sYhndZkBxmWEdAU0t8istpBTdEmFYha8PGLAZeyOqFbtclF3g==}"
+          password: "{AQAAABAAAABwe4xia8/7mSYesECaZBbIkhJsAAxCGSOMakU0rwNreEvo24EsfQfrUEklHPb7jS+4qToEmB3q45g8Wgu6JMoVhnmLerDOwb8wlK/1iOsuw7oCLNJXJ38SxV2R5UFKOUTte1y1I70X0PLNSSxjcYmOAw2ddNOVs+tcdZ1PdBHJvbU=}"
           scope: GLOBAL
           username: "dimitrisdol"
           usernameSecret: true
       - usernamePassword:
           description: "Docker username and password for my personal DockerHub"
           id: "Docker-credentials"
-          password: "{AQAAABAAAAAQtWzSrlsRb6O+qNpw5sCoRcK12VjDR9nLc/iW1RDH1MY=}"
+          password: "{AQAAABAAAABAIdqboUfpb3u4OZG5w34d7rrSGv0mj/PWNPv8i7/vYptPxcMwGPaqrMQ5Fe6qj+n+zp4PQyWkGeU1b/cG3dw4xy7rrlhbJv5+iQ51nGj8gRM=}"
           scope: GLOBAL
           username: "jmmisd"
       - usernamePassword:
           description: "Jenkins credentials to connect to Nexus repository"
           id: "Nexus-credentials-jenkins"
-          password: "{AQAAABAAAAAQTfdL6sXZVy2opeOOYn4gtkxJPt6y0yH1HvaYqFFd9oc=}"
+          password: "{AQAAABAAAAAQNoowuF238vf08S0fi1AKv6TLoXEQ65TSmg8+wSqb/eE=}"
           scope: GLOBAL
           username: "jenkins"
 jenkins:
@@ -31,6 +31,7 @@ jenkins:
       allowAnonymousRead: false
   clouds:
   - kubernetes:
+      connectTimeout: 30
       containerCap: 10
       containerCapStr: "10"
       jenkinsUrl: "http://192.168.49.2:32000"
@@ -53,6 +54,7 @@ jenkins:
         name: "kube-agent"
         namespace: "default"
         yamlMergeStrategy: "override"
+      waitForPodSec: 300
       webSocket: true
   crumbIssuer:
     standard:
@@ -215,7 +217,7 @@ unclassified:
           \ to by the 'id' attribute below).\n     | \n     | NOTE: You should either\
           \ specify username/password OR privateKey/passphrase, since these pairings\
           \ are \n     |       used together.\n     | -->\n    <server>\n      <id>nexus</id>\n\
-          \      <username>jenkins</username>\n      <password>admin</password>\n\
+          \      <username>username</username>\n      <password>password</password>\n\
           \    </server>\n    \n    \n    <!-- Another sample, using keys to authenticate.\n\
           \    <server>\n      <id>siteServer</id>\n      <privateKey>/path/to/private/key</privateKey>\n\
           \      <passphrase>optional; leave empty if not used.</passphrase>\n   \
