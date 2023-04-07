@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #Path of project locally to execute the script.
-ENV_PATH=~/Desktop/jenkins_kube/jenkins/kube-deployment/
+ENV_PATH=~/Desktop/jenkins_kube/deployment/jenkins-setup/
 
 # Create the minikube cluster that will handle the etnire infrastructure.
-minikube start --driver docker --delete-on-failure --nodes 3 --subnet "192.168.49.0/24" 
+minikube start --driver docker --delete-on-failure --nodes 3 --subnet "192.168.49.0/24" --memory 16384 --cpus 3
 
 # Wait for the cluster setup to finish.
 sleep 60 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_PATH=~/Desktop/jenkins_kube/jenkins/nexus/
+ENV_PATH=~/Desktop/jenkins_kube/deployment/nexus/
 
 #Check the perisstent volume you use for the Nexus deployment!!
 NEXUS_DATA=/nexus-data

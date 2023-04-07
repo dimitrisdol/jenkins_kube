@@ -22,10 +22,10 @@ spec:
           image: jenkins/jenkins:lts
           resources:
             limits:
-              memory: "4Gi"
+              memory: "8Gi"
               cpu: "2000m"
             requests:
-              memory: "500Mi"
+              memory: "2Gi"
               cpu: "500m"
           ports:
             - name: httpport
