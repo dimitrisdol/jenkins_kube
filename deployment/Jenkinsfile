@@ -48,7 +48,7 @@ pipeline {
 
     // Nexus ENV vars
       NEXUS_CREDENTIAL_ID = "Nexus-credentials-jenkins"
-      NEXUS_DOCKER_REGISTRY = "https://192.168.49.2:32003"
+      NEXUS_DOCKER_REGISTRY = "http://192.168.49.2:32002"
 
   }
   stages{
