@@ -13,5 +13,6 @@ spec:
   type: NodePort
   ports:
     - port: 8080
+      name: default
       targetPort: 8080
       nodePort: 32000

@@ -13,8 +13,13 @@ spec:
   type: NodePort
   ports:
     - port: 8081
+      name: default
       targetPort: 8081
       nodePort: 32001
+    - port: 8082
+      name: docker
+      targetPort: 8082
+      nodePort: 32002
 
  
 

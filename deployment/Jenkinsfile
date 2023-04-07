@@ -41,9 +41,15 @@ pipeline {
     }
   }
   environment {
+    
     // Docker ENV vars
       USER_CREDENTIALS = credentials('Docker-credentials')
       TAG = "0.0.${BUILD_NUMBER}"
+
+    // Nexus ENV vars
+      NEXUS_CREDENTIAL_ID = "Nexus-credentials-jenkins"
+      NEXUS_DOCKER_REGISTRY = "http://192.168.49.2:32002"
+
   }
   stages{
     stage("Build"){
@@ -74,6 +80,19 @@ pipeline {
           }
         }
       }
+    }
+    stage("Deploy Docker Image") {
+          steps{
+              container('docker'){
+                  script {
+                  // Pushing the image to our local docker repository inside Nexus
+                      docker.withRegistry( NEXUS_DOCKER_REGISTRY , NEXUS_CREDENTIAL_ID ) {
+                        dockerImage.push()
+                        dockerImageLatest.push()
+                      }
+                    } 
+                }   
+            }
     } 
   }
 }
