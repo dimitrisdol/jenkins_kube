@@ -11,6 +11,15 @@ pipeline {
               labels:
                 jenkins: slave
             spec:
+              initContainers:
+              - name: init-docker-config
+                image: busybox
+                command: ["/bin/sh", "-c"]
+                args:
+                - echo "{\"insecure-registries\":[\"http://192.168.49.2:32002\"]}" > /etc/docker/damon.json
+                volumeMounts:
+                - name: docker-config
+                  mountPath: /etc/docker
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
@@ -33,10 +42,19 @@ pipeline {
                 volumeMounts:
                 - name: dockersock
                   mountPath: "/var/run/docker.sock"
+                - name: docker-config
+                  mountPath: /etc/docker
+                - name: docker-data
+                  mountPaht: /var/lib/docker
               volumes:
               - name: dockersock
                 hostPath:
-                  path: /var/run/docker.sock 
+                  path: /var/run/docker.sock
+              - name: docker-config
+                hostPath:
+                  path: /etc/docker
+              - name: docker-data
+                emptyDir: {} 
             '''
     }
   }
