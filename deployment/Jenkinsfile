@@ -104,9 +104,9 @@ pipeline {
           steps{
               container('kube'){
                   sh '''
-                  pwd
+                  set -e
+                  echo "Applying deployment.yaml..."
                   kubectl apply -f sample-maven-web-app/kube/deployment.yaml
-                  ./samepl-maven-web-app/kube/deploy.sh
                   '''
         }   
       }
