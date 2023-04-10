@@ -33,24 +33,16 @@ pipeline {
                 volumeMounts:
                 - name: dockersock
                   mountPath: "/var/run/docker.sock"
-                - name: docker-config
-                  mountPath: "/etc/docker"
-                - name: docker-data
-                  mountPath: "/var/lib/docker"
-                - name: docker-certs
-                  mountPath: "/etc/docker/certs.d/192.168.49.2"
+              - name: kube
+                image: bitnami/kubectl:1.24.12
+                command:
+                - sleep
+                args:
+                - 99d
               volumes:
               - name: dockersock
                 hostPath:
                   path: /var/run/docker.sock
-              - name: docker-config
-                hostPath:
-                  path: /etc/docker
-              - name: docker-data
-                emptyDir: {}
-              - name: docker-certs
-                configMap:
-                  name: nexus-certs
             '''
     }
   }
@@ -81,11 +73,11 @@ pipeline {
             // We also build the Docker image. I used my docker account and tagged the image based on the pipeline build number.
                           dockerImage = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:${TAG}", "-f sample-maven-web-app/Dockerfile .")
                           dockerImageLatest = docker.build("${USER_CREDENTIALS_USR}/sample-maven-web-app:latest", "-f sample-maven-web-app/Dockerfile .")
-                  }
-              }
+          }
+        }
       }
     }
-    stage("Deploy Artifact"){
+    stage("Deliver Artifact"){
       steps{
           container('maven'){
             //We changed the pom.xml file accordingly to deploy to our private Nexus artifactory
@@ -95,7 +87,7 @@ pipeline {
         }
       }
     }
-    stage("Deploy Docker Image") {
+    stage("Deliver Docker Image") {
           steps{
               container('docker'){
                   script {
@@ -103,10 +95,21 @@ pipeline {
                       docker.withRegistry( NEXUS_DOCKER_REGISTRY , NEXUS_CREDENTIAL_ID ) {
                         dockerImage.push()
                         dockerImageLatest.push()
-                      }
-                    } 
-                }   
             }
-    } 
+          } 
+        }   
+      }
+    }
+     stage("Kubernetes Deployment") {
+          steps{
+              container('kube'){
+                  sh '''
+                  pwd
+                  kubectl apply -f sample-maven-web-app/kube/deployment.yaml
+                  ./samepl-maven-web-app/kube/deploy.sh
+                  '''
+        }   
+      }
+    }
   }
 }
