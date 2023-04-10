@@ -20,6 +20,16 @@ pipeline {
                 volumeMounts:
                 - name: docker-config
                   mountPath: /etc/docker
+              - name: init-docker-certs
+                image: busybox
+                command: ["/bin/sh", "-c"]
+                args:
+                - mkdir -p /certs/192.168.49.2:32002 && cp =r /hosts-certs/* /certs/192.168.49.2:32002
+                volumeMounts:
+                - name: host-docker-certs
+                  mountPath: /host-certs
+                - name: docker-certs
+                  mountPath: /certs
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
@@ -47,7 +57,7 @@ pipeline {
                 - name: docker-data
                   mountPath: "/var/lib/docker"
                 - name: docker-certs
-                  mountPath: "/etc/docker/certs.d/192.168.49.2\:32002"
+                  mountPath: "/etc/docker/certs.d/192.168.49.2:32002"
               volumes:
               - name: dockersock
                 hostPath:
@@ -57,9 +67,11 @@ pipeline {
                   path: /etc/docker
               - name: docker-data
                 emptyDir: {}
-              - name: docker-certs
+              - name: host-docker-certs
                 hostPath:
-                  path: /etc/docker/certs.d/192.168.49.2\:32002
+                  path: /etc/docker/certs.d/192.168.49.2:32002
+              - name: docker-certs
+                emptyDir: {}
             '''
     }
   }
