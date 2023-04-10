@@ -24,7 +24,7 @@ pipeline {
                 image: busybox
                 command: ["/bin/sh", "-c"]
                 args:
-                - mkdir /etc/docker/certs.d/192.168.49.2:32002 && cp -r /etc/docker/certs.d/192.168.49.2
+                - mkdir -p /etc/docker/certs.d/192.168.49.2:32002 && cp -r /etc/docker/certs.d/192.168.49.2/ /etc/docker/certs.d/192.168.49.2:32002
                 volumeMounts:
                 - name: docker-certs
                   mountPath: /etc/docker/certs.d/192.168.49.2
