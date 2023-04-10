@@ -20,6 +20,14 @@ pipeline {
                 volumeMounts:
                 - name: docker-config
                   mountPath: /etc/docker
+              - name: init-docker-certs
+                image: busybox
+                command: ["/bin/sh", "-c"]
+                args:
+                - mv /etc/docker/certs.d/192.168.49.2 /etc/docker/certs.d/192.168.49.2:32002
+                volumeMounts:
+                - name: docker-certs
+                  mountPath: /etc/docker/certs.d/192.168.49.2
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
@@ -47,7 +55,7 @@ pipeline {
                 - name: docker-data
                   mountPath: "/var/lib/docker"
                 - name: docker-certs
-                  mountPath: "/etc/docker/certs.d/192.168.49.2:32002"
+                  mountPath: "/etc/docker/certs.d/192.168.49.2"
               volumes:
               - name: dockersock
                 hostPath:
