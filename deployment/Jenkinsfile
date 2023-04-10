@@ -34,11 +34,11 @@ pipeline {
                 - name: dockersock
                   mountPath: "/var/run/docker.sock"
               - name: kube
-                image: bitnami/kubectl:1.24.12
+                image: alpine/k8s:1.26.3
                 command:
-                - cat
+                - sleep
                 args:
-                - /dev/null
+                - 99d
               volumes:
               - name: dockersock
                 hostPath:
