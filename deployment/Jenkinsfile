@@ -36,9 +36,9 @@ pipeline {
               - name: kube
                 image: bitnami/kubectl:1.24.12
                 command:
-                - sleep
+                - cat
                 args:
-                - 99d
+                - /dev/null
               volumes:
               - name: dockersock
                 hostPath:
