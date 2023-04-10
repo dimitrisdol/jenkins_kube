@@ -27,5 +27,8 @@ sleep 40
 # Then we apply the service to expose the Jenkins service to our localhost.
 kubectl apply -f ${ENV_PATH}service.yaml
 
+#Apply the serviceaccount that allows the default service to deploy via the pipeline (AVOID IN PRODUCTION)
+kubectl apply -f ${ENV_PATH}deployment_serviceAccount.yaml
+
 NODE_IP=$(minikube ip)
 eval echo Here is the Jenkins URL: ${NODE_IP}:32000
