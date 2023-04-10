@@ -47,7 +47,7 @@ pipeline {
                 - name: docker-data
                   mountPath: "/var/lib/docker"
                 - name: docker-certs
-                  mountPath: "/etc/docker/certs.d"
+                  mountPath: "/etc/docker/certs.d/192.168.49.2:32002"
               volumes:
               - name: dockersock
                 hostPath:
@@ -59,7 +59,7 @@ pipeline {
                 emptyDir: {}
               - name: docker-certs
                 hostPath:
-                  path: /etc/docker/certs.d 
+                  path: /etc/docker/certs.d/192.168.49.2:32002
             '''
     }
   }
