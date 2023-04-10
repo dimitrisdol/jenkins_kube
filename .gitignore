@@ -1,3 +1,4 @@
 deployment/config/jenkins.yaml
 certs
+deployment/nexus/configmap.yaml
 
