@@ -59,7 +59,7 @@ pipeline {
                 emptyDir: {}
               - name: docker-certs
                 hostPath:
-                  path: "/etc/docker/certs.d/192.168.49.2:32002"
+                  path: "/etc/docker/certs.d/192.168.49.2"
             '''
     }
   }
