@@ -8,9 +8,9 @@ cd ..
 cd ..
 
 #Expose the deployment to create a NodePort service
-./kubectl expose deployment web-app --type=NodePort
+kubectl expose deployment web-app --type=NodePort
 
 #Get that Port and print it with the full IP of the web-app!
-PORT=$(./kubectl get service web-app --output='jsonpath="{.spec.ports[0].nodePort}"')
+PORT=$(kubectl get service web-app --output='jsonpath="{.spec.ports[0].nodePort}"')
 eval echo 192.168.49.2:${PORT}/sample-web-app 
 
