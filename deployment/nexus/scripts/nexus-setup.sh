@@ -2,11 +2,8 @@
 
 ENV_PATH=~/Desktop/jenkins_kube/deployment/nexus/
 
-#Check the perisstent volume you use for the Nexus deployment!!
-NEXUS_DATA=/nexus-data
-
-#Allow Nexus to use its data
-sudo chown -R 200:200 ${NEXUS_DATA}
+#Check the persistent volume you use for the Nexus deployment!!
+kubectl create -f ${ENV_PATH}volume.yaml
 
 #Deploy the Nexus deployment
 kubectl apply -f ${ENV_PATH}deployment.yaml
