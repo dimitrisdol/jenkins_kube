@@ -25,9 +25,9 @@ pipeline {
                 image: docker:dind
                 tty: true
                 command:
-                - sleep
-                args:
-                - 99d
+                - dockerd
+                - '--host=unix:///var/run/docker.sock'
+                - '--host=tcp://0.0.0.0:2375'
                 securityContext:
                   privileged: true
               - name: kube
