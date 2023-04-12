@@ -16,7 +16,16 @@ pipeline {
                  image: busybox
                  command: ["/bin/sh", "-c"]
                  args:
-                 - echo "{\"insecure-registries\":[\"192.168.49.2:32002\"]}" >> /etc/docker/daemon.json
+                 - |
+                   echo '{
+                   "exec-opts": ["native.cgroupdriver=systemd"],
+                   "log-driver": "json-file",
+                   "log-opts": {
+                     "max-size": "100m"
+                   },
+                   "storage-driver": "overlay2",
+                   "insecure-registries":["192.168.49.2:32002"]
+                   }' > /etc/docker/daemon.json
                  volumeMounts:
                  - name: docker-config
                    mountPath: /etc/docker
