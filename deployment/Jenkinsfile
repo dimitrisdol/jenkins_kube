@@ -11,6 +11,15 @@ pipeline {
               labels:
                 jenkins: slave
             spec:
+              initContainers:
+              - name: init-docker-config
+                 image: busybox
+                 command: ["/bin/sh", "-c"]
+                 args:
+                 - echo "{\"insecure-registries\":[\"192.168.49.2:32002\"]}" >> /etc/docker/daemon.json
+                 volumeMounts:
+                 - name: docker-config
+                   mountPath: /etc/docker
               containers:
               - name: jnlp
                 image: jenkins/inbound-agent:latest
@@ -30,12 +39,19 @@ pipeline {
                 - '--host=tcp://0.0.0.0:2375'
                 securityContext:
                   privileged: true
+                volumeMounts:
+                - name: docker-config
+                  mountPath: /etc/docker
               - name: kube
                 image: alpine/k8s:1.26.3
                 command:
                 - sleep
                 args:
                 - 99d
+              volumes:
+              - name: docker-config
+                hostPath:
+                  path: /etc/docker
             '''
     }
   }
