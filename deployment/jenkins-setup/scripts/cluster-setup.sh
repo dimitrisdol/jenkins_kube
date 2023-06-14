@@ -32,3 +32,9 @@ kubectl apply -f ${ENV_PATH}deployment_serviceAccount.yaml
 
 NODE_IP=$(minikube ip)
 eval echo Here is the Jenkins URL: ${NODE_IP}:32000
+
+echo "Here is the initialAdmin password"
+
+export POD=$(kubectl get pods -n devops-tools --no-headers -o custom-columns=":metadata.name" | grep -i jenkins)
+
+kubectl exec pods/$POD -n devops-tools -it cat /var/jenkins_home/secrets/initialAdminPassword
