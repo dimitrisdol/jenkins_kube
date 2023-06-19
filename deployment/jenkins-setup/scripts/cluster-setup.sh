@@ -30,6 +30,13 @@ kubectl apply -f ${ENV_PATH}service.yaml
 #Apply the serviceaccount that allows the default service to deploy via the pipeline (AVOID IN PRODUCTION)
 kubectl apply -f ${ENV_PATH}deployment_serviceAccount.yaml
 
+#Create necessary secrets if needed!
+kubectl create secret generic gitlab-certificate --from-file=cert=home/jim/git-certs/cert.crt
+
+#keytool -import -alias gitlab -keystore /opt/java/openjdk/lib/security/cacerts -file /etc/gitlab-certs/cert -storepass changeit -noprompt
+#cp /etc/gitlab-certs/cert /usr/local/share/ca-certificates/gitlab-dg11.crt
+#update-ca-certificates
+
 NODE_IP=$(minikube ip)
 eval echo Here is the Jenkins URL: ${NODE_IP}:32000
 

@@ -51,7 +51,12 @@ spec:
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
+            - name: gitlab-certificate
+              mountPath: /etc/gitlab-certs
       volumes:
         - name: jenkins-data
           persistentVolumeClaim:
               claimName: jenkins-pv-claim
+        - name: gitlab-certificate
+          secret:
+            secretName: gitlab-certificate
